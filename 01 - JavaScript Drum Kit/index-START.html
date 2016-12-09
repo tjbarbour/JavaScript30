@@ -45,6 +45,10 @@
       <kbd>L</kbd>
       <span class="sound">tink</span>
     </div>
+    <div data-key="32" class="key">
+      <kbd>SPACE</kbd>
+      <span class="sound">I GOT A FEVER, AND THE ONLY CURE IS...</span>
+    </div>
   </div>
 
   <audio data-key="65" src="sounds/clap.wav"></audio>
@@ -56,8 +60,40 @@
   <audio data-key="74" src="sounds/snare.wav"></audio>
   <audio data-key="75" src="sounds/tom.wav"></audio>
   <audio data-key="76" src="sounds/tink.wav"></audio>
+  <audio data-key="32" src="sounds/cowbell.wav"></audio>
 
 <script>
+
+  function playSound(keyCode){
+    const keyAttrSelector = `[data-key="${keyCode}"]`
+    const audio = document.querySelector("audio"+keyAttrSelector);
+
+    if(!audio){ return; }
+
+    audio.currentTime = 0;  // be kind, rewind
+    audio.play();
+
+    addTransition(document.querySelector(".key"+keyAttrSelector));
+  }
+
+  function addTransition(key){
+    key.classList.add("playing");
+  }
+
+  function removeTransition(key){
+    key.classList.remove("playing");
+  }
+
+  document.querySelectorAll(".key")
+    .forEach(key => key.addEventListener("transitionend", function(event){
+      if(event.propertyName == "transform"){
+        removeTransition(this);
+      }
+    }));
+
+  window.addEventListener('keydown', function(event){
+    playSound(event.keyCode);
+  });
 
 </script>
 

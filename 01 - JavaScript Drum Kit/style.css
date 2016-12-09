@@ -12,6 +12,7 @@ body,html {
 .keys {
   display:flex;
   flex:1;
+  flex-wrap: wrap;
   min-height:100vh;
   align-items: center;
   justify-content: center;
@@ -29,6 +30,12 @@ body,html {
   color:white;
   background:rgba(0,0,0,0.4);
   text-shadow:0 0 5px black;
+  align-self: flex-end;
+}
+
+.key[data-key="32"]{
+  width: 1050px;
+  align-self: flex-start;  
 }
 
 .playing {
