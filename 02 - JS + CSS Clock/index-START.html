@@ -108,12 +108,18 @@
     const hour = now.getHours();
     const hourDegrees = 90 + (hour / 12)*360;
     hourHand.style.transform = `rotate(${hourDegrees}deg)`;
-  }
 
+    if(!transitionEnabled){
+      // Turn on transitions
+      document.querySelectorAll(".hand").forEach(hand => hand.classList.add("tick-transition"));
+      transitionEnabled = true;
+    }
+
+    transitionEnabled = true;
+  }
+  let transitionEnabled = false;
   // Initially get everyone in place
   setDate();
-  // Turn on transitions
-  document.querySelectorAll(".hand").forEach(hand => hand.classList.add("tick-transition"));
   // Start ticking
   setInterval(setDate, 1000);
 
