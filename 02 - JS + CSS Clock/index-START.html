@@ -61,12 +61,61 @@
       background:black;
       position: absolute;
       top:50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition-timing-function: cubic-bezier(0.42, 0, 0.55, 1.46);
+      border-radius: 25%;
+    }
+
+    .tick-transition{
+      transition: all 0.5s;
+    }
+
+    .hand.second-hand{
+      background: lightgreen;
+    }
+
+    .hand.min-hand{
+      background: yellow;
+      width: 40%;
+      right:50%; /*this allows us to make the hand smaller*/
+    }
+
+    .hand.hour-hand{
+      background: magenta;
+      width: 33%;
+      right:50%; /*this allows us to make the hand smaller*/
     }
 
   </style>
 
   <script>
+  const secondHand = document.querySelector(".second-hand");
+  const minuteHand = document.querySelector(".min-hand");
+  const hourHand = document.querySelector(".hour-hand");
+  function setDate(){
+    const now = new Date();
+    
+    // Calculate total rotation to avoid jumping back when it rolls over to the next value
+    const seconds = now.getSeconds() + now.getMinutes()*60 + now.getHours()*60*60;
+    const secondsDegrees = 90 + (seconds / 60)*360;
+    secondHand.style.transform = `rotate(${secondsDegrees}deg)`;
 
+    const minute = now.getMinutes() + now.getHours()*60;
+    const minuteDegrees = 90 + (minute / 60)*360;
+    minuteHand.style.transform = `rotate(${minuteDegrees}deg)`;
+
+    const hour = now.getHours();
+    const hourDegrees = 90 + (hour / 12)*360;
+    hourHand.style.transform = `rotate(${hourDegrees}deg)`;
+  }
+
+  // Initially get everyone in place
+  setDate();
+  // Turn on transitions
+  document.querySelectorAll(".hand").forEach(hand => hand.classList.add("tick-transition"));
+  // Start ticking
+  setInterval(setDate, 1000);
 
   </script>
 </body>
