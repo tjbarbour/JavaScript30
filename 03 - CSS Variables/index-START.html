@@ -9,19 +9,33 @@
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
-    <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <input type="range" name="spacing" min="10" max="200" value="0" data-sizing="px">
 
     <label for="blur">Blur:</label>
-    <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input type="range" name="blur" min="0" max="25" value="0" data-sizing="px">
 
     <label for="base">Base Color</label>
-    <input type="color" name="base" value="#ffc600">
+    <input type="color" name="base" >
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+    :root{
+      --base:#01b8f1;
+      --spacing: 15px;
+      --blur: 0px;
+    }
 
+    img{
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl{
+      color: var(--base);
+    }
     /*
       misc styles, nothing to do with CSS variables
     */
@@ -53,6 +67,23 @@
   </style>
 
   <script>
+
+    var computedStyles = window.getComputedStyle(document.documentElement);
+    function updateValue(prop){
+      let target = document.querySelector(`input[name='${prop}']`);
+      const value = computedStyles.getPropertyValue(`--${prop}`).replace("px","");
+      target.value = value;
+    }
+    ["base", "spacing", "blur"].forEach(prop => updateValue(prop));
+
+    function handleUpdate(){
+      const suffix = this.dataset.sizing || "";
+      document.documentElement.style.setProperty(`--${this.name}`, this.value+suffix);
+    }
+
+    const inputs = document.querySelectorAll(".controls input");
+    inputs.forEach(input => input.addEventListener("input", handleUpdate));
+    
   </script>
 
 </body>
